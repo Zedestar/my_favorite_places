@@ -1,21 +1,30 @@
+import 'package:favourite_places/RiverPod/add_place.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddPlaces extends StatefulWidget {
+class AddPlaces extends ConsumerStatefulWidget {
   const AddPlaces({super.key});
 
   @override
-  State<AddPlaces> createState() => _AddPlacesState();
+  ConsumerState<AddPlaces> createState() => _AddPlacesState();
 }
 
-class _AddPlacesState extends State<AddPlaces> {
+class _AddPlacesState extends ConsumerState<AddPlaces> {
   final _textController = TextEditingController();
-
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     _textController.dispose();
     super.dispose();
+  }
+
+  void addPlace() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    ref.read(userPlacesProvider.notifier).addPlace(_textController.text);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -27,7 +36,7 @@ class _AddPlacesState extends State<AddPlaces> {
       ),
       body: SingleChildScrollView(
         child: Form(
-          key: formKey,
+          key: _formKey,
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -50,7 +59,7 @@ class _AddPlacesState extends State<AddPlaces> {
                   height: 30,
                 ),
                 ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: addPlace,
                     icon: Icon(Icons.add),
                     label: Text("Add place"))
               ],
