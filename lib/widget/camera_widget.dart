@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:favourite_places/functions/addImageToParent.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Cameraring extends StatefulWidget {
-  const Cameraring({super.key});
+  const Cameraring({super.key, required this.adderFunction});
+
+  final AddImageToParent adderFunction;
 
   @override
   State<Cameraring> createState() => _CameraringState();
@@ -20,24 +23,33 @@ class _CameraringState extends State<Cameraring> {
       source: ImageSource.camera,
       maxWidth: 600,
     );
-    if (theImage != null) {
+    if (theImage == null) {
       return;
     }
     setState(() {
-      _imageTaken = File(theImage!.path);
+      _imageTaken = File(theImage.path);
+      widget.adderFunction(_imageTaken!);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     content = OutlinedButton.icon(
-      onPressed: () {},
+      onPressed: captureImage,
       label: Text("Camera"),
       icon: Icon(Icons.camera),
     );
 
     if (_imageTaken != null) {
-      content = Image.file(_imageTaken!);
+      content = GestureDetector(
+        onTap: captureImage,
+        child: Image.file(
+          _imageTaken!,
+          fit: BoxFit.fill,
+          width: 250,
+          height: 250,
+        ),
+      );
     }
 
     return Container(

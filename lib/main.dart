@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'My favourite place'),
     );
   }
 }
@@ -37,23 +37,48 @@ class MyHomePage extends ConsumerWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(title),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
-            itemCount: placesList.length,
-            itemBuilder: (contex, index) {
-              final item = placesList[index];
-              return InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return PlaceDetailsPage(place: item);
-                        },
+          itemCount: placesList.length,
+          itemBuilder: (contex, index) {
+            final item = placesList[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 8,
+              ),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return PlaceDetailsPage(place: item);
+                      },
+                    ),
+                  );
+                },
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 28,
+                    backgroundColor: Colors.grey[200],
+                    child: ClipOval(
+                      child: Image.file(
+                        item.image,
+                        width: 56,
+                        height: 56,
+                        fit: BoxFit.cover,
                       ),
-                    );
-                  },
-                  child: Text(item.title));
-            }),
+                    ),
+                  ),
+                  title: Text(
+                    item.title,
+                    style: TextStyle(fontSize: 22),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

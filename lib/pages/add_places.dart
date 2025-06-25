@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:favourite_places/RiverPod/add_place.dart';
 import 'package:favourite_places/widget/camera_widget.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,7 @@ class AddPlaces extends ConsumerStatefulWidget {
 class _AddPlacesState extends ConsumerState<AddPlaces> {
   final _textController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  File? _placeImage;
 
   @override
   void dispose() {
@@ -24,8 +27,16 @@ class _AddPlacesState extends ConsumerState<AddPlaces> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    ref.read(userPlacesProvider.notifier).addPlace(_textController.text);
+    ref
+        .read(userPlacesProvider.notifier)
+        .addPlace(title: _textController.text, image: _placeImage!);
     Navigator.of(context).pop();
+  }
+
+  void setPlaceImage(File image) {
+    setState(() {
+      _placeImage = image;
+    });
   }
 
   @override
@@ -59,7 +70,9 @@ class _AddPlacesState extends ConsumerState<AddPlaces> {
                 SizedBox(
                   height: 30,
                 ),
-                Cameraring(),
+                Cameraring(
+                  adderFunction: setPlaceImage,
+                ),
                 SizedBox(
                   height: 30,
                 ),
