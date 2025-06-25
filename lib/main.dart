@@ -1,5 +1,6 @@
 import 'package:favourite_places/RiverPod/add_place.dart';
 import 'package:favourite_places/pages/add_places.dart';
+import 'package:favourite_places/pages/place_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,7 +42,17 @@ class MyHomePage extends ConsumerWidget {
             itemCount: placesList.length,
             itemBuilder: (contex, index) {
               final item = placesList[index];
-              return Text(item.title);
+              return InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return PlaceDetailsPage(place: item);
+                        },
+                      ),
+                    );
+                  },
+                  child: Text(item.title));
             }),
       ),
       floatingActionButton: FloatingActionButton(
