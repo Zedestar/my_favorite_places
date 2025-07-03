@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:favourite_places/model/places_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +15,7 @@ class InputLocationWidget extends StatefulWidget {
 
 class _InputLocationWidgetState extends State<InputLocationWidget> {
   bool _isLoading = false;
-  LocationData? _userLocation;
+  PlaceLocation? _userLocation;
 
   void getCurrentPosition() async {
     setState(() {
@@ -54,7 +55,13 @@ class _InputLocationWidgetState extends State<InputLocationWidget> {
     print(response.body);
 
     setState(() {
-      _userLocation = locationData;
+      _userLocation = PlaceLocation(
+        latitude: locationData.latitude!,
+        longitude: locationData.longitude!,
+        address: (resData['results'] is List && resData['results'].isNotEmpty)
+            ? resData['results'][0]['formatted_address'] ?? ''
+            : '',
+      );
       _isLoading = false;
     });
   }
@@ -72,7 +79,7 @@ class _InputLocationWidgetState extends State<InputLocationWidget> {
               ? CircularProgressIndicator()
               : _userLocation != null
                   ? Text(
-                      "Latittude ${_userLocation!.latitude} longitude ${_userLocation!.longitude}",
+                      "Latittude ${_userLocation!.latitude} longitude ${_userLocation!.longitude} \nAddress: ${_userLocation!.address}",
                     )
                   : Text("NO any data selected"),
         ),

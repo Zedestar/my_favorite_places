@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:favourite_places/RiverPod/add_place.dart';
+import 'package:favourite_places/model/places_model.dart';
 import 'package:favourite_places/widget/camera_widget.dart';
 import 'package:favourite_places/widget/input_location_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class _AddPlacesState extends ConsumerState<AddPlaces> {
   final _textController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   File? _placeImage;
+  PlaceLocation? _placeLocation;
 
   @override
   void dispose() {
@@ -28,9 +30,11 @@ class _AddPlacesState extends ConsumerState<AddPlaces> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    ref
-        .read(userPlacesProvider.notifier)
-        .addPlace(title: _textController.text, image: _placeImage!);
+    ref.read(userPlacesProvider.notifier).addPlace(
+          title: _textController.text,
+          image: _placeImage!,
+          location: _placeLocation!,
+        );
     Navigator.of(context).pop();
   }
 
