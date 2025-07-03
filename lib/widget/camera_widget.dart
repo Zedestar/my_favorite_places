@@ -46,7 +46,7 @@ class _CameraringState extends State<Cameraring> {
         child: Image.file(
           _imageTaken!,
           fit: BoxFit.fill,
-          width: 250,
+          width: double.infinity,
           height: 250,
         ),
       );
@@ -55,7 +55,7 @@ class _CameraringState extends State<Cameraring> {
     return Container(
       decoration: BoxDecoration(border: Border.all(width: 0.5)),
       height: 250,
-      width: 250,
+      width: double.infinity,
       alignment: Alignment.center,
       child: content,
     );

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:favourite_places/RiverPod/add_place.dart';
 import 'package:favourite_places/widget/camera_widget.dart';
+import 'package:favourite_places/widget/input_location_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -68,11 +69,15 @@ class _AddPlacesState extends ConsumerState<AddPlaces> {
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
                 Cameraring(
                   adderFunction: setPlaceImage,
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                InputLocationWidget(),
                 SizedBox(
                   height: 30,
                 ),
