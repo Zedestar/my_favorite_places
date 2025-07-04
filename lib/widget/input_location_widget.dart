@@ -14,8 +14,18 @@ class InputLocationWidget extends StatefulWidget {
 }
 
 class _InputLocationWidgetState extends State<InputLocationWidget> {
+  final String mapApiKey = dotenv.env['GOOGLE_MAPS_API_KEY']!;
   bool _isLoading = false;
   PlaceLocation? _userLocation;
+
+  String get mapImageUrl {
+    if (_userLocation == null) {
+      return "";
+    }
+    final lat = _userLocation!.latitude;
+    final lon = _userLocation!.longitude;
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lon&zoom=16&size=600x400&maptype=roadmap&markers=color:red|$lat,$lon&key=$mapApiKey';
+  }
 
   void getCurrentPosition() async {
     setState(() {
@@ -44,7 +54,7 @@ class _InputLocationWidgetState extends State<InputLocationWidget> {
     }
 
     locationData = await location.getLocation();
-    final String mapApiKey = dotenv.env['GOOGLE_MAPS_API_KEY']!;
+
     final url = Uri.parse(
       'https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationData.latitude},${locationData.longitude}&key=$mapApiKey',
     );
@@ -78,8 +88,14 @@ class _InputLocationWidgetState extends State<InputLocationWidget> {
           child: _isLoading
               ? CircularProgressIndicator()
               : _userLocation != null
-                  ? Text(
-                      "Latittude ${_userLocation!.latitude} longitude ${_userLocation!.longitude} \nAddress: ${_userLocation!.address}",
+                  // ? Text(
+                  //     "Latittude ${_userLocation!.latitude} longitude ${_userLocation!.longitude} \nAddress: ${_userLocation!.address}",
+                  //   )
+                  ? Image.network(
+                      mapImageUrl,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
                     )
                   : Text("NO any data selected"),
         ),
