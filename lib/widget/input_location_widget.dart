@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:favourite_places/functions/addImageToParent.dart';
 import 'package:favourite_places/model/places_model.dart';
+import 'package:favourite_places/pages/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -117,7 +118,15 @@ class _InputLocationWidgetState extends State<InputLocationWidget> {
               ),
             ),
             OutlinedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return GoogleMapScreen();
+                    },
+                  ),
+                );
+              },
               icon: Icon(
                 Icons.map_outlined,
               ),
