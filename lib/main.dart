@@ -77,6 +77,7 @@ class MyHomePage extends ConsumerWidget {
                     item.title,
                     style: TextStyle(fontSize: 22),
                   ),
+                  subtitle: Text(item.location?.address ?? ""),
                 ),
               ),
             );

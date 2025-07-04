@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:favourite_places/functions/addImageToParent.dart';
 import 'package:favourite_places/model/places_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -7,7 +8,9 @@ import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
 
 class InputLocationWidget extends StatefulWidget {
-  const InputLocationWidget({super.key});
+  const InputLocationWidget({super.key, required this.addLocationToParent});
+
+  final AddLocationToParent addLocationToParent;
 
   @override
   State<InputLocationWidget> createState() => _InputLocationWidgetState();
@@ -24,7 +27,7 @@ class _InputLocationWidgetState extends State<InputLocationWidget> {
     }
     final lat = _userLocation!.latitude;
     final lon = _userLocation!.longitude;
-    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lon&zoom=16&size=600x400&maptype=roadmap&markers=color:red|$lat,$lon&key=$mapApiKey';
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lon&zoom=16&size=600x400&maptype=hybrid&markers=color:red|$lat,$lon&key=$mapApiKey';
   }
 
   void getCurrentPosition() async {
@@ -72,6 +75,7 @@ class _InputLocationWidgetState extends State<InputLocationWidget> {
             ? resData['results'][0]['formatted_address'] ?? ''
             : '',
       );
+      widget.addLocationToParent(_userLocation!);
       _isLoading = false;
     });
   }

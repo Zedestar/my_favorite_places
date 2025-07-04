@@ -44,6 +44,12 @@ class _AddPlacesState extends ConsumerState<AddPlaces> {
     });
   }
 
+  void setPlaceLocation(PlaceLocation location) {
+    setState(() {
+      _placeLocation = location;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +87,9 @@ class _AddPlacesState extends ConsumerState<AddPlaces> {
                 SizedBox(
                   height: 10,
                 ),
-                InputLocationWidget(),
+                InputLocationWidget(
+                  addLocationToParent: setPlaceLocation,
+                ),
                 SizedBox(
                   height: 30,
                 ),
