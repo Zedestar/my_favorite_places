@@ -2,6 +2,8 @@ import 'package:favourite_places/model/places_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'map_screen.dart';
+
 class PlaceDetailsPage extends StatelessWidget {
   PlaceDetailsPage({super.key, required this.place});
   final Place place;
@@ -36,9 +38,21 @@ class PlaceDetailsPage extends StatelessWidget {
             bottom: 10,
             child: Column(
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(mapImageUrl),
-                  radius: 72,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => GoogleMapScreen(
+                          latitude: place.location!.latitude,
+                          longitude: place.location!.longitude,
+                        ),
+                      ),
+                    );
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(mapImageUrl),
+                    radius: 72,
+                  ),
                 ),
                 Text(
                   place.location!.address ?? "",
