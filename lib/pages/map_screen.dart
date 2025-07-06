@@ -53,7 +53,9 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
           ],
           if (pickedPlaceLocation != null) ...[
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pop(pickedPlaceLocation);
+                },
                 icon: const Icon(
                   Icons.save_outlined,
                   color: Colors.black,

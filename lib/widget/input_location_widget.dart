@@ -118,14 +118,24 @@ class _InputLocationWidgetState extends State<InputLocationWidget> {
               ),
             ),
             OutlinedButton.icon(
-              onPressed: () {
-                Navigator.of(context).push(
+              onPressed: () async {
+                final PlaceLocation? userLocationFromTheMap =
+                    await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
                       return GoogleMapScreen();
                     },
                   ),
                 );
+
+                if (userLocationFromTheMap != null) {
+                  setState(() {
+                    _isLoading = true;
+                    _userLocation = userLocationFromTheMap;
+                    widget.addLocationToParent(_userLocation!);
+                    _isLoading = false;
+                  });
+                }
               },
               icon: Icon(
                 Icons.map_outlined,
