@@ -22,4 +22,26 @@ class AppDb extends _$AppDb {
 
   @override
   int get schemaVersion => 1;
+
+  // The place manipulation methods
+
+  Stream<List<FavouritePlaceData>> getAllFavouritePlaces() {
+    return (select(favouritePlace)
+          ..orderBy([(tbl) => OrderingTerm.desc(tbl.id)]))
+        .watch();
+  }
+
+  Future<FavouritePlaceData> getFavouritePlaceById(int id) async {
+    return await (select(favouritePlace)..where((item) => item.id.equals(id)))
+        .getSingle();
+  }
+
+  Future<int> deleteFavouritePlace(int id) async {
+    return await (delete(favouritePlace)..where((item) => item.id.equals(id)))
+        .go();
+  }
+
+  Future<int> insertingFavouritePlace(FavouritePlaceCompanion entity) async {
+    return await into(favouritePlace).insert(entity);
+  }
 }
