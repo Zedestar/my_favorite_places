@@ -10,6 +10,8 @@ class UserPlaceNotifier extends StateNotifier<List<Place>> {
 
   final AppDb _appDb = AppDb();
 
+  Stream<List<FavouritePlaceData>> get app => _appDb.getAllFavouritePlaces();
+
   Future<void> addPlace(
       {required String title,
       required File image,
@@ -19,7 +21,9 @@ class UserPlaceNotifier extends StateNotifier<List<Place>> {
     // 1. Insert into DB
     final companion = FavouritePlaceCompanion(
       name: Value(newPlace.title),
-      address: Value(location.address!.substring(0, 49)),
+      address: Value(location.address!.length > 49
+          ? location.address!.substring(0, 49)
+          : location.address!),
       latitude: Value(location.latitude),
       longitude: Value(location.longitude),
       imageUrl: Value(newPlace.image.path),
