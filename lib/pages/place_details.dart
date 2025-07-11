@@ -1,4 +1,6 @@
-import 'package:favourite_places/model/places_model.dart';
+import 'dart:io';
+
+import 'package:favourite_places/database/app_db.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -6,15 +8,15 @@ import 'map_screen.dart';
 
 class PlaceDetailsPage extends StatelessWidget {
   PlaceDetailsPage({super.key, required this.place});
-  final Place place;
+  final FavouritePlaceData place;
   final String mapApiKey = dotenv.env['GOOGLE_MAPS_API_KEY']!;
 
   String get mapImageUrl {
-    if (place.location == null) {
-      return "";
-    }
-    final lat = place.location!.latitude;
-    final lon = place.location!.longitude;
+    // if (place) {
+    //   return "";
+    // }
+    final lat = place.latitude;
+    final lon = place.longitude;
     return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lon&zoom=16&size=600x400&maptype=hybrid&markers=color:red|$lat,$lon&key=$mapApiKey';
   }
 
@@ -22,12 +24,12 @@ class PlaceDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(place.title),
+        title: Text(place.name),
       ),
       body: Stack(
         children: [
           Image.file(
-            place.image,
+            File(place.imageUrl),
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
@@ -43,8 +45,8 @@ class PlaceDetailsPage extends StatelessWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => GoogleMapScreen(
-                          latitude: place.location!.latitude,
-                          longitude: place.location!.longitude,
+                          latitude: place.latitude,
+                          longitude: place.longitude,
                         ),
                       ),
                     );
@@ -55,7 +57,7 @@ class PlaceDetailsPage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  place.location!.address ?? "",
+                  place.address ?? "",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 22,

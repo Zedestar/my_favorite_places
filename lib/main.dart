@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:favourite_places/RiverPod/add_place.dart';
 import 'package:favourite_places/pages/add_places.dart';
+import 'package:favourite_places/pages/place_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,11 +57,24 @@ class MyHomePage extends ConsumerWidget {
               itemCount: places.length,
               itemBuilder: (context, index) {
                 final place = places[index];
-                return ListTile(
-                  title: Text(place.name),
-                  subtitle: Text(place.address),
-                  leading: CircleAvatar(
-                    backgroundImage: FileImage(place.imageUrl.toFilePath()),
+                return InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return PlaceDetailsPage(place: place);
+                        },
+                      ),
+                    );
+                  },
+                  child: ListTile(
+                    title: Text(place.name),
+                    subtitle: Text(place.address),
+                    leading: CircleAvatar(
+                      backgroundImage: FileImage(
+                        File(place.imageUrl),
+                      ), // ✅ FIX: Use FileImage, not Image.file directly
+                    ),
                   ),
                 );
               },
